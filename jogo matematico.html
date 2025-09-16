@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Jogo de Multiplicação e Divisão</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+      color: #333;
+    }
+    h1 {
+      margin: 20px;
+    }
+    #game {
+      margin-top: 40px;
+    }
+    #question {
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+    input {
+      padding: 10px;
+      font-size: 20px;
+      width: 100px;
+      text-align: center;
+      border-radius: 5px;
+      border: 2px solid #333;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      margin-left: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #27ae60;
+      color: white;
+    }
+    button:hover {
+      background: #219150;
+    }
+    #feedback {
+      font-size: 20px;
+      margin-top: 20px;
+    }
+    #score {
+      margin-top: 30px;
+      font-size: 22px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Jogo de Multiplicação e Divisão ✖ ➗</h1>
+
+  <div id="game">
+    <div id="question">Carregando...</div>
+    <input type="number" id="answer" placeholder="Resposta">
+    <button onclick="checkAnswer()">OK</button>
+    <div id="feedback"></div>
+    <div id="score">Pontuação: 0</div>
+  </div>
+
+  <!-- Sons -->
+  <audio id="correctSound" src="https://www.soundjay.com/button/beep-07.wav"></audio>
+  <audio id="wrongSound" src="https://www.soundjay.com/button/beep-10.wav"></audio>
+
+  <script>
+    let score = 0;
+    let currentAnswer = 0;
+
+    function newQuestion() {
+      let a = Math.floor(Math.random() * 10) + 1;
+      let b = Math.floor(Math.random() * 10) + 1;
+      let operation = Math.random() > 0.5 ? "x" : "÷";
+
+      if (operation === "x") {
+        currentAnswer = a * b;
+        document.getElementById("question").innerText = `${a} × ${b} = ?`;
+      } else {
+        currentAnswer = a;
+        let result = a * b;
+        document.getElementById("question").innerText = `${result} ÷ ${b} = ?`;
+      }
+      document.getElementById("answer").value = "";
+    }
+
+    function checkAnswer() {
+      let userAnswer = parseInt(document.getElementById("answer").value);
+      if (userAnswer === currentAnswer) {
+        document.getElementById("feedback").innerText = "✅ Correto!";
+        document.getElementById("feedback").style.color = "green";
+        document.getElementById("correctSound").play();
+        score++;
+      } else {
+        document.getElementById("feedback").innerText = `❌ Errado! Resposta: ${currentAnswer}`;
+        document.getElementById("feedback").style.color = "red";
+        document.getElementById("wrongSound").play();
+      }
+      document.getElementById("score").innerText = "Pontuação: " + score;
+      setTimeout(newQuestion, 1500);
+    }
+
+    // Inicia o jogo
+    newQuestion();
+  </script>
+</body>
+</html>
